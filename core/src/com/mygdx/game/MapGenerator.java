@@ -27,15 +27,18 @@ public class MapGenerator {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                tiles[x][y] = (int) (Math.random() * 2); 
+                tiles[x][y] = (int) (Math.random() * 5);
             }
         }
     }
 
     private void loadTextures() {
-        tileTextures = new TextureRegion[2]; 
+        tileTextures = new TextureRegion[5];
         tileTextures[0] = new TextureRegion(new Texture("grass1.png")); 
         tileTextures[1] = new TextureRegion(new Texture("grass2.png")); 
+        tileTextures[2] = new TextureRegion(new Texture("grass3.png"));
+        tileTextures[3] = new TextureRegion(new Texture("grass4.png"));
+        tileTextures[4] = new TextureRegion(new Texture("grass5.png"));
     }
 
     public void render(SpriteBatch batch) {
