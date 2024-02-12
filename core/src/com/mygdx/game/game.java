@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,15 +25,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class game extends ApplicationAdapter {
-
+    static final int TPIXEL_SIZE = 32;
     public enum GameState {
         MENU,
         PLAYING,
         PAUSED
     }
-    private Stage stage;
-    private Skin skin;
 
+
+    long lastTimeCounted;
+    private float sinceChange;
+    private float frameRate;
     private GameState currentState;
     private SpriteBatch gameBatch;
     private SpriteBatch textBatch;
@@ -44,6 +47,10 @@ public class game extends ApplicationAdapter {
     private MapGenerator mapGenerator;
     @Override
     public void create() {
+        lastTimeCounted = TimeUtils.millis();
+        sinceChange = 0;
+        frameRate = Gdx.graphics.getFramesPerSecond();
+
         currentState = GameState.MENU;
         gameBatch = new SpriteBatch();
         textBatch = new SpriteBatch();
@@ -58,7 +65,7 @@ public class game extends ApplicationAdapter {
         textCamera = new OrthographicCamera();
         textCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        mapGenerator = new MapGenerator(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 32);
+        mapGenerator = new MapGenerator( TPIXEL_SIZE);
     }
 
     @Override
@@ -117,6 +124,17 @@ public class game extends ApplicationAdapter {
     private void renderGame() {
         font.setColor(Color.WHITE);
 
+        //---frame-----------------------
+        long delta = TimeUtils.timeSinceMillis(lastTimeCounted);
+        lastTimeCounted = TimeUtils.millis();
+
+        sinceChange += delta;
+        if(sinceChange >= 1000) {
+            sinceChange = 0;
+            frameRate = Gdx.graphics.getFramesPerSecond();
+        }
+        //-------------------------
+
         switch (currentState) {
             case MENU:
                 textBatch.begin();
@@ -133,10 +151,17 @@ public class game extends ApplicationAdapter {
                 textBatch.begin();
                 //DEBUG
                     font.draw(textBatch, "PLAYING", 100, 100);
-                    font.draw(textBatch, "Mouse Position: " + inputManager.MousePos.x + ", " + inputManager.MousePos.y , 100,  150);
-                    font.draw(textBatch, "Player Position: " + player.player_pos.x + ", " + player.player_pos.y , 100, 170);
-                    font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 100, 190);
-                    font.draw(textBatch, "Angle: "+ player.player_angle, 100, 210);
+                    font.draw(textBatch, "Mouse Position: " + inputManager.MousePos.x + ", " + inputManager.MousePos.y , 3,  Gdx.graphics.getHeight() - 10);
+                    font.draw(textBatch, "Player Position: " + player.player_pos.x + ", " + player.player_pos.y , 3, Gdx.graphics.getHeight() - 30);
+                    font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 3, Gdx.graphics.getHeight() - 50);
+                    font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
+                    font.draw(textBatch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
+
+                    font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 120);
+
+                    //draw map's tile number
+                    mapGenerator.map_debug(font, textBatch);
+
                 // End rendering text
                 textBatch.end();
 
