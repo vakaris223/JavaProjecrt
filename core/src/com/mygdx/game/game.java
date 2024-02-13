@@ -65,7 +65,7 @@ public class game extends ApplicationAdapter {
         textCamera = new OrthographicCamera();
         textCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        mapGenerator = new MapGenerator( TPIXEL_SIZE);
+        mapGenerator = new MapGenerator(TPIXEL_SIZE);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class game extends ApplicationAdapter {
     private void renderGame() {
         font.setColor(Color.WHITE);
 
-        //---frame-----------------------
+        //---frame counter-----------------------
         long delta = TimeUtils.timeSinceMillis(lastTimeCounted);
         lastTimeCounted = TimeUtils.millis();
 
@@ -144,7 +144,10 @@ public class game extends ApplicationAdapter {
             case PLAYING:
                 gameBatch.begin();
                     gameBatch.setProjectionMatrix(gameCamera.combined);
-                    mapGenerator.render(gameBatch);
+
+
+                    mapGenerator.render(gameBatch, font, gameBatch);
+
                     player.render();
                 gameBatch.end();
 
@@ -157,10 +160,10 @@ public class game extends ApplicationAdapter {
                     font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
                     font.draw(textBatch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
 
-                    font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 120);
 
+                    font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 120);
                     //draw map's tile number
-                    mapGenerator.map_debug(font, textBatch);
+                    //mapGenerator.map_debug(font, textBatch);
 
                 // End rendering text
                 textBatch.end();

@@ -33,12 +33,17 @@ public class MapGenerator {
         }
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, BitmapFont font, SpriteBatch textBatch) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int tileType = getTileType(x, y);
                 TextureRegion texture = tileTextures[tileType];
+
+
+
                 batch.draw(texture, x * tileSize, y * tileSize);
+                //debug
+                font.draw(textBatch, ""+tileType, (x * tileSize)+tileSize/2, (y * tileSize)+tileSize/2);
             }
         }
     }
