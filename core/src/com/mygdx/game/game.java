@@ -34,7 +34,6 @@ public class game extends ApplicationAdapter {
     public Pixmap mousepm;
     public Cursor cursor;
     public ArrayList<Bullet> bullets;
-
     public RenderManager renderManager;
     public Game_update gameUpdate;
 

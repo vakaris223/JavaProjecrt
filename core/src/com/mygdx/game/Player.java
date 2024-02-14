@@ -47,13 +47,11 @@ class Bullet {
 
 
 public class Player {
-
     private String bullet_imgPath;
     public Sprite bullet_skin;
     public Vector2 bullet_pos = Vector2.Zero;
     public float bullet_angle = 0;
     public float bullet_speed = 5;
-
     private int health;
     private SpriteBatch batch;
     public String player_imgPath;
