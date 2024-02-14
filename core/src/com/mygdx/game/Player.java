@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -15,6 +14,9 @@ class Bullet {
     public float y; // Y-coordinate of the bullet
     private float angle; // Angle of the bullet's trajectory
     private float speed ; // Speed of the bullet
+
+    public float width;
+    public float height;
     public Sprite bullet_skin;
 
     public Bullet(float x, float y, float angle) {
@@ -22,9 +24,14 @@ class Bullet {
         this.y = y;
         this.angle = angle;
         this.speed = 500;
+
+
         // Set the texture of the bullet (replace "bullet_texture" with your actual texture)
         Texture bulletTexture = new Texture("bullet.png");
         this.bullet_skin = new Sprite(bulletTexture);
+
+        this.height = bullet_skin.getHeight();
+        this.width = bullet_skin.getWidth();
     }
 
     public void update(float deltaTime) {
@@ -65,7 +72,6 @@ public class Player {
         this.bullet_imgPath = bullet_imgPath;
         bullets = new ArrayList<>();
 
-
         setValues(); // Call setValues to initialize the player sprite
     }
 
@@ -78,7 +84,6 @@ public class Player {
 
         player_skin.setPosition(player_pos.x, player_pos.y);
         player_skin.setOrigin(player_skin.getWidth() / 2, player_skin.getHeight() / 2); // Set origin to the center of the sprite
-
 
         Texture bulletTexture = new Texture(Gdx.files.internal(bullet_imgPath));
         for (Bullet bullet : bullets) {
@@ -112,9 +117,8 @@ public class Player {
 
     public void shoot_action() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            // Create a new bullet instance at the player's position
+
             Bullet bullet = new Bullet(player_pos.x, player_pos.y, player_angle );
-            // Add the bullet to the list of bullets
             bullets.add(bullet);
         }
     }
@@ -124,4 +128,3 @@ public class Player {
     }
     
 }
-

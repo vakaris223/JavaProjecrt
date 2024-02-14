@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -40,9 +42,12 @@ public class game extends ApplicationAdapter {
     private Pixmap mousepm;
     private Cursor cursor;
     private ArrayList<Bullet> bullets;
+
+    private Rectangle tileRect;
     @Override
     public void create() {
         mousepm = new Pixmap(Gdx.files.internal("corsair.png"));
+        //mousepm.setColor(new Color(5,5,5,5));
         cursor = Gdx.graphics.newCursor(mousepm, mousepm.getWidth() / 2, mousepm.getHeight() / 2);
 
         lastTimeCounted = TimeUtils.millis();
@@ -55,6 +60,7 @@ public class game extends ApplicationAdapter {
         font = new BitmapFont(); // Initialize the font object here
         inputManager = new InputManager();
         player = new Player(50, gameBatch, "player.png","bullet.png", new Vector2(100,100), 0);
+
         bullets = new ArrayList<>();
         // Initialize the camera with orthographic projection
         gameCamera = new OrthographicCamera();
@@ -64,7 +70,11 @@ public class game extends ApplicationAdapter {
         textCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         mapGenerator = new MapGenerator(TPIXEL_SIZE);
-
+        Rectangle tileRect = new Rectangle();
+        tileRect.height = 50;
+        tileRect.width = 50;
+        tileRect.x = 50;
+        tileRect.y = 50;
 
     }
 
@@ -115,28 +125,36 @@ public class game extends ApplicationAdapter {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     currentState = GameState.PAUSED;
                 }
-
-
-
                 player.shoot_action();
 
-                for (int i = 0; i < bullets.size(); i++) {
-                    Bullet bullet = bullets.get(i);
-                    bullet.update(deltaTime);
+                for (int i = 0; i < player.bullets.size(); i++) {
+                    player.bullets.get(i).update(deltaTime);
 
                     // Check for collision with other game objects
                     // You can implement collision detection here
-
                     // Remove bullets that are off-screen or have collided
-                    if (bullet.x < 0 || bullet.x > Gdx.graphics.getWidth() || bullet.y < 0 || bullet.y > Gdx.graphics.getHeight()) {
-                        bullets.remove(bullet);
+
+                    if (player.bullets.get(i).x < 0 || player.bullets.get(i).x > Gdx.graphics.getWidth() || player.bullets.get(i).y < 0 || player.bullets.get(i).y > Gdx.graphics.getHeight()) {
+                        player.bullets.remove(player.bullets.get(i));
                     }
+
+                    Rectangle bulletRect = new Rectangle();
+                    bulletRect.height = player.bullets.get(i).height;
+                    bulletRect.width = player.bullets.get(i).width;
+                    bulletRect.x = player.bullets.get(i).x;
+                    bulletRect.y = player.bullets.get(i).y;
+
+
+
+
+                    if(Intersector.overlaps(bulletRect, tileRect));
+                    {
+                        player.bullets.remove(player.bullets.get(i));
+                    }
+
+
                 }
-
                 player.update();
-
-
-
                 break;
             case PAUSED:
                 // Handle paused logic
@@ -176,6 +194,8 @@ public class game extends ApplicationAdapter {
                     for (Bullet bullet : bullets) {
                         bullet.render(gameBatch);
                     }
+
+
                 gameBatch.end();
 
                 textBatch.begin();
@@ -186,10 +206,11 @@ public class game extends ApplicationAdapter {
                     font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 3, Gdx.graphics.getHeight() - 50);
                     font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
                     font.draw(textBatch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
+                    font.draw(textBatch, "Bullet count in world: " + player.bullets.size() , 3, Gdx.graphics.getHeight() - 110);
 
 
 
-                    font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 120);
+                    font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 130);
                     //draw map's tile number
                     //mapGenerator.map_debug(font, textBatch);
 

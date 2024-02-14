@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
+
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +18,9 @@ public class MapGenerator {
     private int[][] tiles;
     private int[][] new_tiles;
     private TextureRegion[] tileTextures; 
-    private int tileSize; 
+    private int tileSize;
+
+    private Rectangle body;
 
     public MapGenerator(int tileSize) {
         read_file();
@@ -30,6 +35,8 @@ public class MapGenerator {
         for (int i = 0; i < 7; i++)
         {
             tileTextures[i] = new TextureRegion(new Texture("grass"+ i +".png"));
+
+
         }
     }
 
