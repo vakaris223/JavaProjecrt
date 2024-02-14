@@ -27,7 +27,7 @@ class Bullet {
 
 
         // Set the texture of the bullet (replace "bullet_texture" with your actual texture)
-        Texture bulletTexture = new Texture("bullet.png");
+        Texture bulletTexture = new Texture("items/bullet.png");
         this.bullet_skin = new Sprite(bulletTexture);
 
         this.height = bullet_skin.getHeight();
@@ -54,10 +54,9 @@ public class Player {
     public float bullet_angle = 0;
     public float bullet_speed = 5;
 
-
     private int health;
     private SpriteBatch batch;
-    private String player_imgPath;
+    public String player_imgPath;
     public Sprite player_skin;
     public Vector2 player_pos = Vector2.Zero;
     public float player_angle = 0;
@@ -67,27 +66,20 @@ public class Player {
         this.health = health;
         this.batch = batch; // Ensure batch is properly assigned
         this.player_imgPath = player_imagePath;
+        this.bullet_imgPath = bullet_imgPath;
         this.player_angle =  player_angle;
         this.player_pos = player_pos;
-        this.bullet_imgPath = bullet_imgPath;
         bullets = new ArrayList<>();
-
         setValues(); // Call setValues to initialize the player sprite
     }
 
     public void setValues() {
         Texture player_texture = new Texture(Gdx.files.internal(player_imgPath));
         player_skin = new Sprite(player_texture);
-
-        Texture bullet_texture = new Texture(Gdx.files.internal(bullet_imgPath));
-        bullet_skin = new Sprite(bullet_texture);
-
         player_skin.setPosition(player_pos.x, player_pos.y);
         player_skin.setOrigin(player_skin.getWidth() / 2, player_skin.getHeight() / 2); // Set origin to the center of the sprite
 
-        Texture bulletTexture = new Texture(Gdx.files.internal(bullet_imgPath));
         for (Bullet bullet : bullets) {
-            bullet.bullet_skin = new Sprite(bulletTexture);
             bullet.bullet_skin.setOrigin(bullet.bullet_skin.getWidth() / 2, bullet.bullet_skin.getHeight() / 2);
         }
     }
@@ -117,7 +109,6 @@ public class Player {
 
     public void shoot_action() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-
             Bullet bullet = new Bullet(player_pos.x, player_pos.y, player_angle );
             bullets.add(bullet);
         }

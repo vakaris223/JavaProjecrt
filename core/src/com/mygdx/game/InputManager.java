@@ -2,7 +2,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.game.GameState;
 import com.badlogic.gdx.math.Vector2;
 
 public class InputManager {
@@ -40,16 +39,5 @@ public class InputManager {
         
         return movement;
     }
-
-    public int shoot_btn()
-    {
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            return 5;
-        }
-        return 0;
-    }
-
-
-
 
 }
