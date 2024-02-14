@@ -39,8 +39,6 @@ public class MapGenerator {
                 int tileType = getTileType(x, y);
                 TextureRegion texture = tileTextures[tileType];
 
-
-
                 batch.draw(texture, x * tileSize, y * tileSize);
                 //debug
                 font.draw(textBatch, ""+tileType, (x * tileSize)+tileSize/2, (y * tileSize)+tileSize/2);

@@ -41,6 +41,14 @@ public class InputManager {
         return movement;
     }
 
+    public int shoot_btn()
+    {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            return 5;
+        }
+        return 0;
+    }
+
 
 
 
