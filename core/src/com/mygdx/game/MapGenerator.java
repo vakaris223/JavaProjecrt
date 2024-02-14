@@ -34,7 +34,7 @@ public class MapGenerator {
         tileTextures = new TextureRegion[7];
         for (int i = 0; i < 7; i++)
         {
-            tileTextures[i] = new TextureRegion(new Texture("grass"+ i +".png"));
+            tileTextures[i] = new TextureRegion(new Texture("tiles/grass"+ i +".png"));
 
 
         }

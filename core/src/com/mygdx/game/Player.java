@@ -63,10 +63,10 @@ public class Player {
     public float player_angle = 0;
     public ArrayList<Bullet> bullets;
 
-    public Player(int health, SpriteBatch batch, String imagePath, String bullet_imgPath, Vector2 player_pos, float player_angle) {
+    public Player(int health, SpriteBatch batch, String player_imagePath, String bullet_imgPath, Vector2 player_pos, float player_angle) {
         this.health = health;
         this.batch = batch; // Ensure batch is properly assigned
-        this.player_imgPath = imagePath;
+        this.player_imgPath = player_imagePath;
         this.player_angle =  player_angle;
         this.player_pos = player_pos;
         this.bullet_imgPath = bullet_imgPath;

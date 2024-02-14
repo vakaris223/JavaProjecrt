@@ -43,10 +43,9 @@ public class game extends ApplicationAdapter {
     private Cursor cursor;
     private ArrayList<Bullet> bullets;
 
-    private Rectangle tileRect;
     @Override
     public void create() {
-        mousepm = new Pixmap(Gdx.files.internal("corsair.png"));
+        mousepm = new Pixmap(Gdx.files.internal("preference/corsair.png"));
         //mousepm.setColor(new Color(5,5,5,5));
         cursor = Gdx.graphics.newCursor(mousepm, mousepm.getWidth() / 2, mousepm.getHeight() / 2);
 
@@ -59,7 +58,7 @@ public class game extends ApplicationAdapter {
         textBatch = new SpriteBatch();
         font = new BitmapFont(); // Initialize the font object here
         inputManager = new InputManager();
-        player = new Player(50, gameBatch, "player.png","bullet.png", new Vector2(100,100), 0);
+        player = new Player(50, gameBatch, "player/player.png","bullet.png", new Vector2(100,100), 0);
 
         bullets = new ArrayList<>();
         // Initialize the camera with orthographic projection
@@ -70,11 +69,7 @@ public class game extends ApplicationAdapter {
         textCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         mapGenerator = new MapGenerator(TPIXEL_SIZE);
-        Rectangle tileRect = new Rectangle();
-        tileRect.height = 50;
-        tileRect.width = 50;
-        tileRect.x = 50;
-        tileRect.y = 50;
+
 
     }
 
@@ -135,20 +130,6 @@ public class game extends ApplicationAdapter {
                     // Remove bullets that are off-screen or have collided
 
                     if (player.bullets.get(i).x < 0 || player.bullets.get(i).x > Gdx.graphics.getWidth() || player.bullets.get(i).y < 0 || player.bullets.get(i).y > Gdx.graphics.getHeight()) {
-                        player.bullets.remove(player.bullets.get(i));
-                    }
-
-                    Rectangle bulletRect = new Rectangle();
-                    bulletRect.height = player.bullets.get(i).height;
-                    bulletRect.width = player.bullets.get(i).width;
-                    bulletRect.x = player.bullets.get(i).x;
-                    bulletRect.y = player.bullets.get(i).y;
-
-
-
-
-                    if(Intersector.overlaps(bulletRect, tileRect));
-                    {
                         player.bullets.remove(player.bullets.get(i));
                     }
 
