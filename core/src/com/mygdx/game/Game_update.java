@@ -27,8 +27,8 @@ public class Game_update {
         gameCamera.update();
         gameBatch.setProjectionMatrix(gameCamera.combined);
 
-        gameCamera.position.x = player.player_pos.x + player.player_skin.getWidth() / 2;
-        gameCamera.position.y = player.player_pos.y + player.player_skin.getHeight() / 2;
+        gameCamera.position.x = player.player_pos.x + player.w / 2;
+        gameCamera.position.y = player.player_pos.y + player.h / 2;
 
         textCamera.update();
 
@@ -51,13 +51,12 @@ public class Game_update {
                 player.player_pos.y += inputManager.movement().y * 1.5f;
 
                 float radians = (float) Math.atan2(inputManager.MousePos.y - player.player_pos.y, inputManager.MousePos.x - player.player_pos.x);
-                player.player_angle = (float) Math.toDegrees(radians);
-
+                //player.player_angle = (float) Math.toDegrees(radians);
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                     game.currentState = GameState.PAUSED;
                 }
-                player.shoot_action();
+                //player.shoot_action();
 
                 for (int i = 0; i < player.bullets.size(); i++) {
                     player.bullets.get(i).update(deltaTime);
@@ -69,8 +68,6 @@ public class Game_update {
                     if (player.bullets.get(i).x < 0 || player.bullets.get(i).x > Gdx.graphics.getWidth() || player.bullets.get(i).y < 0 || player.bullets.get(i).y > Gdx.graphics.getHeight()) {
                         player.bullets.remove(player.bullets.get(i));
                     }
-
-
                 }
                 player.update();
                 break;

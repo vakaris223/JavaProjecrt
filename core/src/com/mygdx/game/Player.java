@@ -2,19 +2,24 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Null;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 class Bullet {
     public float x; // X-coordinate of the bullet
     public float y; // Y-coordinate of the bullet
     private float angle; // Angle of the bullet's trajectory
     private float speed ; // Speed of the bullet
-
     public float width;
     public float height;
     public Sprite bullet_skin;
@@ -24,7 +29,6 @@ class Bullet {
         this.y = y;
         this.angle = angle;
         this.speed = 500;
-
 
         // Set the texture of the bullet (replace "bullet_texture" with your actual texture)
         Texture bulletTexture = new Texture("items/bullet.png");
@@ -45,61 +49,64 @@ class Bullet {
     }
 }
 
-
 public class Player {
-    private String bullet_imgPath;
-    public Sprite bullet_skin;
-    public Vector2 bullet_pos = Vector2.Zero;
-    public float bullet_angle = 0;
-    public float bullet_speed = 5;
-    private int health;
-    private SpriteBatch batch;
-    public String player_imgPath;
-    public Sprite player_skin;
-    public Vector2 player_pos = Vector2.Zero;
-    public float player_angle = 0;
-    public ArrayList<Bullet> bullets;
 
-    public Player(int health, SpriteBatch batch, String player_imagePath, String bullet_imgPath, Vector2 player_pos, float player_angle) {
-        this.health = health;
-        this.batch = batch; // Ensure batch is properly assigned
-        this.player_imgPath = player_imagePath;
-        this.bullet_imgPath = bullet_imgPath;
-        this.player_angle =  player_angle;
+    public float h = 0,w = 0;
+    public Vector2 player_pos = Vector2.Zero;
+    public ArrayList<Bullet> bullets;
+    private Animations animations;
+    float stateTime;
+    public TextureRegion currentFrame = null;
+    public Player
+            (
+             Vector2 player_pos
+            )
+    {
         this.player_pos = player_pos;
         bullets = new ArrayList<>();
-        setValues(); // Call setValues to initialize the player sprite
+        setValues();
     }
-
-    public void setValues() {
-        Texture player_texture = new Texture(Gdx.files.internal(player_imgPath));
-        player_skin = new Sprite(player_texture);
-        player_skin.setPosition(player_pos.x, player_pos.y);
-        player_skin.setOrigin(player_skin.getWidth() / 2, player_skin.getHeight() / 2); // Set origin to the center of the sprite
-
-        for (Bullet bullet : bullets) {
+    public void setValues()
+    {
+        for (Bullet bullet : bullets)
+        {
             bullet.bullet_skin.setOrigin(bullet.bullet_skin.getWidth() / 2, bullet.bullet_skin.getHeight() / 2);
         }
+        animations = new Animations();
     }
+    public void render(SpriteBatch batch) {
+        if (batch != null) {
+            stateTime += Gdx.graphics.getDeltaTime();
 
-    public void render() {
-        if (batch != null && player_skin != null) {
-            // Draw the player sprite
-            batch.draw(player_skin, player_skin.getX(), player_skin.getY(), player_skin.getOriginX(), player_skin.getOriginY(), player_skin.getWidth(), player_skin.getHeight(), 1, 1, player_skin.getRotation());
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                currentFrame = animations.animation_add("player/Walk_up.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                currentFrame = animations.animation_add("player/Walk_down.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                currentFrame = animations.animation_add("player/Walk_left.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                currentFrame = animations.animation_add("player/Walk_right.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+            } else {
+                currentFrame = animations.animation_add("player/idle.png", 2, 4, 0.5f, 3).getKeyFrame(stateTime, true);
+            }
+
+
+            int h = currentFrame.getRegionHeight();
+            int w = currentFrame.getRegionWidth();
+
+
+            batch.draw(currentFrame, player_pos.x, player_pos.y, w, h);
 
             // Render bullets
             for (Bullet bullet : bullets) {
                 bullet.render(batch);
             }
         } else {
-            System.out.println("Batch or skin is null!");
+            System.out.println("Batch is null!");
         }
     }
-
     public void update()
     {
-        player_skin.setPosition(player_pos.x, player_pos.y);
-        player_skin.setRotation(player_angle);
         for (Bullet bullet : bullets) {
             bullet.update(Gdx.graphics.getDeltaTime());
         }
@@ -107,13 +114,12 @@ public class Player {
 
     public void shoot_action() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            Bullet bullet = new Bullet(player_pos.x, player_pos.y, player_angle );
-            bullets.add(bullet);
+            //Bullet bullet = new Bullet(player_pos.x, player_pos.y, player_angle);
+            //bullets.add(bullet);
         }
     }
 
     public void dispose() {
-        player_skin.getTexture().dispose();
+
     }
-    
 }

@@ -50,9 +50,9 @@ public class game extends ApplicationAdapter {
         currentState = GameState.MENU;
         gameBatch = new SpriteBatch();
         textBatch = new SpriteBatch();
-        font = new BitmapFont(); // Initialize the font object here
+        font = new BitmapFont();
         inputManager = new InputManager();
-        player = new Player(50, gameBatch, "player/player.png","items/bullet.png", new Vector2(100,100), 0);
+        player = new Player(new Vector2(0,0));
         bullets = new ArrayList<>();
         // Initialize the camera with orthographic projection
         gameCamera = new OrthographicCamera();

@@ -31,7 +31,7 @@ public class RenderManager {
                 gameBatch.setProjectionMatrix(gameCamera.combined);
                 mapGenerator.render(gameBatch, font, gameBatch);
 
-                player.render();
+                player.render(gameBatch);
 
                 for (Bullet bullet : player.bullets) {
                     bullet.render(gameBatch);
@@ -45,7 +45,7 @@ public class RenderManager {
                 font.draw(textBatch, "Mouse Position: " + inputManager.MousePos.x + ", " + inputManager.MousePos.y , 3,  Gdx.graphics.getHeight() - 10);
                 font.draw(textBatch, "Player Position: " + player.player_pos.x + ", " + player.player_pos.y , 3, Gdx.graphics.getHeight() - 30);
                 font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 3, Gdx.graphics.getHeight() - 50);
-                font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
+                //font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
                 font.draw(textBatch, (int)game.frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
                 font.draw(textBatch, "Bullet count in world: " + player.bullets.size() , 3, Gdx.graphics.getHeight() - 110);
                 font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 130);
