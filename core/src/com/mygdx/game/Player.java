@@ -2,18 +2,14 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Null;
 
 import java.util.ArrayList;
-import java.util.Objects;
+
 
 class Bullet {
     public float x; // X-coordinate of the bullet
@@ -50,20 +46,23 @@ class Bullet {
 }
 
 public class Player {
-
     public float h = 0,w = 0;
     public Vector2 player_pos = Vector2.Zero;
     public ArrayList<Bullet> bullets;
     private Animations animations;
     float stateTime;
     public TextureRegion currentFrame = null;
+    public float walkspeed;
+    private float scale = 2;
     public Player
             (
-             Vector2 player_pos
+             Vector2 player_pos,
+             float walkspeed
             )
     {
         this.player_pos = player_pos;
         bullets = new ArrayList<>();
+        this.walkspeed = walkspeed;
         setValues();
     }
     public void setValues()
@@ -79,23 +78,21 @@ public class Player {
             stateTime += Gdx.graphics.getDeltaTime();
 
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                currentFrame = animations.animation_add("player/Walk_up.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+                currentFrame = animations.animation_add("player/Walk_up.png", 4, 1, walkspeed/(walkspeed*5), 0).getKeyFrame(stateTime, true);
             } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                currentFrame = animations.animation_add("player/Walk_down.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+                currentFrame = animations.animation_add("player/Walk_down.png", 4, 1, walkspeed/(walkspeed*5), 0).getKeyFrame(stateTime, true);
             } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                currentFrame = animations.animation_add("player/Walk_left.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+                currentFrame = animations.animation_add("player/Walk_left.png", 4, 1, walkspeed/(walkspeed*5), 0).getKeyFrame(stateTime, true);
             } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                currentFrame = animations.animation_add("player/Walk_right.png", 4, 1, 0.5f, 0).getKeyFrame(stateTime, true);
+                currentFrame = animations.animation_add("player/Walk_right.png", 4, 1, walkspeed/(walkspeed*5), 0).getKeyFrame(stateTime, true);
             } else {
-                currentFrame = animations.animation_add("player/idle.png", 2, 4, 0.5f, 3).getKeyFrame(stateTime, true);
+                currentFrame = animations.animation_add("player/idle.png", 2, 4, walkspeed/(walkspeed*5), 3).getKeyFrame(stateTime, true);
             }
-
 
             int h = currentFrame.getRegionHeight();
             int w = currentFrame.getRegionWidth();
 
-
-            batch.draw(currentFrame, player_pos.x, player_pos.y, w, h);
+            batch.draw(currentFrame, player_pos.x, player_pos.y, w*scale, h*scale);
 
             // Render bullets
             for (Bullet bullet : bullets) {
@@ -113,7 +110,8 @@ public class Player {
     }
 
     public void shoot_action() {
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+        {
             //Bullet bullet = new Bullet(player_pos.x, player_pos.y, player_angle);
             //bullets.add(bullet);
         }

@@ -47,8 +47,8 @@ public class Game_update {
                 Gdx.graphics.setCursor(cursor);
 
                 // Handle playing logic
-                player.player_pos.x += inputManager.movement().x * 1.5f;
-                player.player_pos.y += inputManager.movement().y * 1.5f;
+                player.player_pos.x += inputManager.movement().x * player.walkspeed;
+                player.player_pos.y += inputManager.movement().y * player.walkspeed;
 
                 float radians = (float) Math.atan2(inputManager.MousePos.y - player.player_pos.y, inputManager.MousePos.x - player.player_pos.x);
                 //player.player_angle = (float) Math.toDegrees(radians);

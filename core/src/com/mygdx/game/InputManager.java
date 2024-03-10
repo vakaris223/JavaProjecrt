@@ -1,7 +1,6 @@
 package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 
@@ -25,18 +24,16 @@ public class InputManager {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             y += 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             y -= 1;
-        }else
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             x -= 1;
-        }else
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             x += 1;
         }
-        // Normalize the vector to ensure consistent speed in all directions
-        Vector2 movement = new Vector2(x, y).nor();
-        return movement;
+        return new Vector2(x, y).nor();
     }
 
 }

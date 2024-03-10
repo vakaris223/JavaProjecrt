@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
 
 public class MapGenerator {
     public int width;
@@ -19,17 +21,19 @@ public class MapGenerator {
     private int[][] new_tiles;
     private TextureRegion[] tileTextures; 
     private int tileSize;
+    private int scale;
 
-    private Rectangle body;
 
-    public MapGenerator(int tileSize) {
+    public MapGenerator(int tileSize, int scale) {
+        generateMap();
         read_file();
-        this.tileSize = tileSize;
+        this.scale = scale;
+        this.tileSize = tileSize * scale;
         this.width = new_tiles.length;
         this.height = new_tiles[0].length;
-        loadTextures();
+        //loadTextures();
+        loadTexturesFormOne();
     }
-
     private void loadTextures() {
         tileTextures = new TextureRegion[7];
         for (int i = 0; i < 7; i++)
@@ -37,16 +41,56 @@ public class MapGenerator {
             tileTextures[i] = new TextureRegion(new Texture("tiles/grass"+ i +".png"));
         }
     }
+    private void loadTexturesFormOne() {
+        Texture texture = new Texture("tiles/alltiles.png"); // Load the single image containing multiple tiles
+        int tileWidth = tileSize; // Width of each tile
+        int tileHeight = tileSize; // Height of each tile
+        int rows = 256/tileSize; // Number of rows of tiles in the single image
+        int cols = 256/tileSize; // Number of columns of tiles in the single image
 
+        TextureRegion[][] tmp = TextureRegion.split(texture, tileWidth, tileHeight);
+        tileTextures = new TextureRegion[rows * cols];
+        int index = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                tileTextures[index++] = tmp[i][j];
+            }
+        }
+        System.out.println(tileTextures.length);
+    }
+    void generateMap()
+    {
+        try {
+            FileWriter file = new FileWriter("map.txt");
+            for (int i = 0; i < 100; i++) {
+                file.write("\r\n");
+                Random randY = new Random();
+                //file.write(String.valueOf(randY.nextInt(5)+" "));
+                file.write(String.valueOf(2+" "));
+                for (int j = 0; j < 100; j++) {
+                    Random randX = new Random();
+                    //file.write( String.valueOf(randX.nextInt(5)+" "));
+                    file.write( String.valueOf(2+" "));
+                }
+            }
+            file.close();
+            System.out.println("Map generated");
+        } catch (IOException e) {
+            System.out.println("An error occurred while generating map");
+            e.printStackTrace();
+        }
+    }
     public void render(SpriteBatch batch, BitmapFont font, SpriteBatch textBatch) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int tileType = getTileType(x, y);
                 TextureRegion texture = tileTextures[tileType];
+                texture.setRegionHeight(tileSize);
+                texture.setRegionWidth(tileSize);
+                batch.draw(texture, x * tileSize, y * tileSize,  texture.getRegionWidth(), texture.getRegionHeight());
 
-                batch.draw(texture, x * tileSize, y * tileSize);
                 //debug
-                font.draw(textBatch, ""+tileType, (x * tileSize)+tileSize/2, (y * tileSize)+tileSize/2);
+                //font.draw(textBatch, ""+tileType, (x * tileSize)+tileSize/2, (y * tileSize)+tileSize/2);
             }
         }
     }
@@ -59,17 +103,15 @@ public class MapGenerator {
             texture.getTexture().dispose();
         }
     }
-
     public void map_debug(BitmapFont font, SpriteBatch textBatch)
     {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                font.draw(textBatch, ""+getTileType(i,j), (i * 32 + 3), (j * 32 + 730));
+                font.draw(textBatch, ""+getTileType(i,j), (i * tileSize + 3), (j * tileSize + 730));
             }
         }
 
     }
-
     private void read_file() {
         // Read the entire file in
         List<String> myFileLines = null;
@@ -100,9 +142,9 @@ public class MapGenerator {
             for (int j = 0; j < splitLine.length; j++) {
                 // Convert each String element to an integer
                 new_tiles[i][j] = Integer.parseInt(splitLine[j]);
+                //new_tiles[i][j] = Integer.parseInt(splitLine[j]);
             }
         }
-
 
         // Print the integer array
         for (int[] row : new_tiles) {
