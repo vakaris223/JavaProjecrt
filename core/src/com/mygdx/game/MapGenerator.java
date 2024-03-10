@@ -28,7 +28,7 @@ public class MapGenerator {
         generateMap();
         read_file();
         this.scale = scale;
-        this.tileSize = tileSize * scale;
+        this.tileSize = tileSize;
         this.width = new_tiles.length;
         this.height = new_tiles[0].length;
         //loadTextures();
@@ -60,22 +60,33 @@ public class MapGenerator {
     }
     void generateMap()
     {
-        try {
+        //grass and flower 0 32
+        //tile and stone paths 32 64
+        int min = 0;
+        int max = 32;
+
+        //size (500x500) max
+        int w = 5;
+        int h = 10;
+
+        try
+        {
             FileWriter file = new FileWriter("map.txt");
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < w; i++) {
                 file.write("\r\n");
                 Random randY = new Random();
-                //file.write(String.valueOf(randY.nextInt(5)+" "));
-                file.write(String.valueOf(2+" "));
-                for (int j = 0; j < 100; j++) {
+                file.write(String.valueOf(randY.nextInt(max-min) + min+" "));
+                //file.write(String.valueOf(30+" "));
+                for (int j = 0; j < h; j++) {
                     Random randX = new Random();
-                    //file.write( String.valueOf(randX.nextInt(5)+" "));
-                    file.write( String.valueOf(2+" "));
+                    file.write( String.valueOf(randX.nextInt(max-min) + min+" "));
+                    //file.write( String.valueOf(30+" "));
                 }
             }
             file.close();
             System.out.println("Map generated");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("An error occurred while generating map");
             e.printStackTrace();
         }
@@ -87,10 +98,9 @@ public class MapGenerator {
                 TextureRegion texture = tileTextures[tileType];
                 texture.setRegionHeight(tileSize);
                 texture.setRegionWidth(tileSize);
-                batch.draw(texture, x * tileSize, y * tileSize,  texture.getRegionWidth(), texture.getRegionHeight());
-
+                batch.draw(texture, x * tileSize * scale, y * tileSize*scale,  texture.getRegionWidth()*scale, texture.getRegionHeight()*scale);
                 //debug
-                //font.draw(textBatch, ""+tileType, (x * tileSize)+tileSize/2, (y * tileSize)+tileSize/2);
+                //font.draw(textBatch, ""+tileType, (x * tileSize * scale)+(tileSize * scale)/2, (y * tileSize * scale)+(tileSize* scale)/2);
             }
         }
     }

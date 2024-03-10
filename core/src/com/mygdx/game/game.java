@@ -52,7 +52,7 @@ public class game extends ApplicationAdapter {
         textBatch = new SpriteBatch();
         font = new BitmapFont();
         inputManager = new InputManager();
-        player = new Player(new Vector2(2000,2000),1f);
+        player = new Player(new Vector2(0,0),1f);
         bullets = new ArrayList<>();
         // Initialize the camera with orthographic projection
         gameCamera = new OrthographicCamera();
@@ -60,7 +60,7 @@ public class game extends ApplicationAdapter {
         textCamera = new OrthographicCamera();
         textCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        mapGenerator = new MapGenerator(TPIXEL_SIZE, 1);
+        mapGenerator = new MapGenerator(TPIXEL_SIZE, 2);
         renderManager = new RenderManager();
         gameUpdate = new Game_update();
     }
