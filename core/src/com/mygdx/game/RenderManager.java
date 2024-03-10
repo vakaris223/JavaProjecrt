@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.util.ArrayList;
+
 public class RenderManager {
 
 
@@ -16,7 +19,8 @@ public class RenderManager {
                            OrthographicCamera textCamera,
                            MapGenerator mapGenerator,
                            InputManager inputManager,
-                           Player player
+                           Player player,
+                           ArrayList<Item> items
                            )
     {
         font.setColor(Color.WHITE);
@@ -29,12 +33,14 @@ public class RenderManager {
             case PLAYING:
                 gameBatch.begin();
                 gameBatch.setProjectionMatrix(gameCamera.combined);
+
                 mapGenerator.render(gameBatch, font, gameBatch);
 
                 player.render(gameBatch);
 
-                for (Bullet bullet : player.bullets) {
-                    bullet.render(gameBatch);
+                //items.get(0).render(gameBatch);
+                for (Item item : items) {
+                    item.render(gameBatch);
                 }
                 gameBatch.end();
 

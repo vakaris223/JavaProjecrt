@@ -66,8 +66,8 @@ public class MapGenerator {
         int max = 32;
 
         //size (500x500) max
-        int w = 5;
-        int h = 10;
+        int w = 50;
+        int h = 50;
 
         try
         {

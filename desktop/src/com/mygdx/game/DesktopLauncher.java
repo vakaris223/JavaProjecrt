@@ -17,7 +17,7 @@ public class DesktopLauncher {
     {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("GameEngine"); // Set the window title
-        
+        //config.setIdleFPS(144);
         config.setMaximized(true);
         new Lwjgl3Application(new game(), config);
     }

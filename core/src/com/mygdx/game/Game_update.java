@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 public class Game_update {
 
     public void update(GameState currentState,
@@ -20,7 +22,8 @@ public class Game_update {
                        InputManager inputManager,
                        Player player,
                        float deltaTime,
-                       Cursor cursor)
+                       Cursor cursor,
+                       ArrayList<Item> items)
     {
         inputManager.MousePos = gameCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -47,8 +50,8 @@ public class Game_update {
                 Gdx.graphics.setCursor(cursor);
 
                 // Handle playing logic
-                player.player_pos.x += inputManager.movement().x * player.walkspeed;
-                player.player_pos.y += inputManager.movement().y * player.walkspeed;
+                player.player_pos.x += inputManager.movement().x * player.walkspeed * deltaTime;
+                player.player_pos.y += inputManager.movement().y * player.walkspeed * deltaTime;
 
                 float radians = (float) Math.atan2(inputManager.MousePos.y - player.player_pos.y, inputManager.MousePos.x - player.player_pos.x);
                 //player.player_angle = (float) Math.toDegrees(radians);
@@ -58,16 +61,8 @@ public class Game_update {
                 }
                 //player.shoot_action();
 
-                for (int i = 0; i < player.bullets.size(); i++) {
-                    player.bullets.get(i).update(deltaTime);
-
-                    // Check for collision with other game objects
-                    // You can implement collision detection here
-                    // Remove bullets that are off-screen or have collided
-
-                    if (player.bullets.get(i).x < 0 || player.bullets.get(i).x > Gdx.graphics.getWidth() || player.bullets.get(i).y < 0 || player.bullets.get(i).y > Gdx.graphics.getHeight()) {
-                        player.bullets.remove(player.bullets.get(i));
-                    }
+                for (int i = 0; i < items.size(); i++) {
+                    items.get(i).update(deltaTime);
                 }
                 player.update();
                 break;

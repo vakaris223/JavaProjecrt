@@ -33,7 +33,7 @@ public class game extends ApplicationAdapter {
     public MapGenerator mapGenerator;
     public Pixmap mousepm;
     public Cursor cursor;
-    public ArrayList<Bullet> bullets;
+    public ArrayList<Item> items;
     public RenderManager renderManager;
     public Game_update gameUpdate;
 
@@ -50,10 +50,17 @@ public class game extends ApplicationAdapter {
         currentState = GameState.MENU;
         gameBatch = new SpriteBatch();
         textBatch = new SpriteBatch();
+        items = new ArrayList<>();
+        float scale = 0.3f;
+        items.add(new Item(new Vector2(0,0),"items/knife.png", scale));
+        items.add(new Item(new Vector2(100,0),"items/pistol.png",scale));
+        items.add(new Item(new Vector2(200,0),"items/rifle.png",scale));
+        items.add(new Item(new Vector2(500,0),"items/shotgun.png",scale));
+
         font = new BitmapFont();
         inputManager = new InputManager();
-        player = new Player(new Vector2(0,0),1f);
-        bullets = new ArrayList<>();
+        player = new Player(new Vector2(0,0),200);
+
         // Initialize the camera with orthographic projection
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -63,6 +70,7 @@ public class game extends ApplicationAdapter {
         mapGenerator = new MapGenerator(TPIXEL_SIZE, 2);
         renderManager = new RenderManager();
         gameUpdate = new Game_update();
+
     }
 
     @Override
@@ -90,7 +98,8 @@ public class game extends ApplicationAdapter {
                         textCamera,
                         mapGenerator,
                         inputManager,
-                        player
+                        player,
+                        items
                 );
         gameUpdate.update
                 (
@@ -104,7 +113,8 @@ public class game extends ApplicationAdapter {
                         inputManager,
                         player,
                         Gdx.graphics.getDeltaTime(),
-                        cursor
+                        cursor,
+                        items
                 );
 
     }
