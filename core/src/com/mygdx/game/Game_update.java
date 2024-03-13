@@ -64,7 +64,7 @@ public class Game_update {
                 for (int i = 0; i < items.size(); i++) {
                     items.get(i).update(deltaTime);
                 }
-                player.update();
+                player.update(items.get(0).skin);
                 break;
             case PAUSED:
                 // Handle paused logic

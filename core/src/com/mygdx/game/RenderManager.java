@@ -53,7 +53,7 @@ public class RenderManager {
                 font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 3, Gdx.graphics.getHeight() - 50);
                 //font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
                 font.draw(textBatch, (int)game.frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
-                font.draw(textBatch, "Bullet count in world: " + player.bullets.size() , 3, Gdx.graphics.getHeight() - 110);
+                //font.draw(textBatch, "Bullet count in world: " + player.bullets.size() , 3, Gdx.graphics.getHeight() - 110);
                 font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 130);
                 //draw map's tile number
                 //mapGenerator.map_debug(font, textBatch);

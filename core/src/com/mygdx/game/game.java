@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -52,6 +53,7 @@ public class game extends ApplicationAdapter {
         textBatch = new SpriteBatch();
         items = new ArrayList<>();
         float scale = 0.3f;
+
         items.add(new Item(new Vector2(0,0),"items/knife.png", scale));
         items.add(new Item(new Vector2(100,0),"items/pistol.png",scale));
         items.add(new Item(new Vector2(200,0),"items/rifle.png",scale));
@@ -124,15 +126,10 @@ public class game extends ApplicationAdapter {
     }
     @Override
     public void resume() {
-        // Handle resuming the game
-    }
-    @Override
-    public void dispose() {
-        mousepm.dispose();
-        mapGenerator.dispose();
-        gameBatch.dispose();
-        textBatch.dispose();
-        font.dispose();
+        // Handle resuming the 3
         player.dispose();
+        for (Item item : items) {
+            item.dispose();
+        }
     }
 }

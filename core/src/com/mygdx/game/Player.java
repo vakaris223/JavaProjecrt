@@ -48,10 +48,10 @@ class Bullet {
 public class Player {
     public float h = 0,w = 0;
     public Vector2 player_pos = Vector2.Zero;
-    public ArrayList<Bullet> bullets;
     private Animations animations;
     float stateTime;
     public TextureRegion currentFrame = null;
+    public Sprite CollSprite;
     public float walkspeed;
     private float scale = 2;
     public Player
@@ -61,16 +61,12 @@ public class Player {
             )
     {
         this.player_pos = player_pos;
-        bullets = new ArrayList<>();
+        //bullets = new ArrayList<>();
         this.walkspeed = walkspeed;
         setValues();
     }
     public void setValues()
     {
-        for (Bullet bullet : bullets)
-        {
-            bullet.bullet_skin.setOrigin(bullet.bullet_skin.getWidth() / 2, bullet.bullet_skin.getHeight() / 2);
-        }
         animations = new Animations();
     }
     public void render(SpriteBatch batch) {
@@ -92,21 +88,16 @@ public class Player {
             int h = currentFrame.getRegionHeight();
             int w = currentFrame.getRegionWidth();
 
+            CollSprite = new Sprite(currentFrame.getTexture());
             batch.draw(currentFrame, player_pos.x, player_pos.y, w*scale, h*scale);
 
-            // Render bullets
-            for (Bullet bullet : bullets) {
-                bullet.render(batch);
-            }
         } else {
             System.out.println("Batch is null!");
         }
     }
-    public void update()
+    public void update(Sprite obj)
     {
-        for (Bullet bullet : bullets) {
-            bullet.update(Gdx.graphics.getDeltaTime());
-        }
+        System.out.println(CollisionHandler.areColliding(CollSprite, obj));
     }
 
     public void shoot_action() {

@@ -32,4 +32,9 @@ public class Item {
                 skin.getWidth(), skin.getHeight(),
                 scale, scale, skin.getRotation());
     }
+
+    public void dispose()
+    {
+        skin.getTexture().dispose();
+    }
 }
