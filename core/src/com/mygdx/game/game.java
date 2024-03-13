@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +38,7 @@ public class game extends ApplicationAdapter {
     public ArrayList<Item> items;
     public RenderManager renderManager;
     public Game_update gameUpdate;
+    public ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
@@ -72,7 +74,7 @@ public class game extends ApplicationAdapter {
         mapGenerator = new MapGenerator(TPIXEL_SIZE, 2);
         renderManager = new RenderManager();
         gameUpdate = new Game_update();
-
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -101,7 +103,8 @@ public class game extends ApplicationAdapter {
                         mapGenerator,
                         inputManager,
                         player,
-                        items
+                        items,
+                        shapeRenderer
                 );
         gameUpdate.update
                 (
@@ -131,5 +134,6 @@ public class game extends ApplicationAdapter {
         for (Item item : items) {
             item.dispose();
         }
+        shapeRenderer.dispose();
     }
 }

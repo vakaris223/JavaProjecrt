@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,8 @@ public class RenderManager {
                            MapGenerator mapGenerator,
                            InputManager inputManager,
                            Player player,
-                           ArrayList<Item> items
+                           ArrayList<Item> items,
+                           ShapeRenderer shapeRenderer
                            )
     {
         font.setColor(Color.WHITE);
@@ -36,13 +38,21 @@ public class RenderManager {
 
                 mapGenerator.render(gameBatch, font, gameBatch);
 
-                player.render(gameBatch);
+                player.render(gameBatch, shapeRenderer);
 
-                //items.get(0).render(gameBatch);
                 for (Item item : items) {
                     item.render(gameBatch);
                 }
                 gameBatch.end();
+
+                // Draw rectangle around player for debugging
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                shapeRenderer.setProjectionMatrix(gameCamera.combined); // Set projection matrix for shapeRenderer
+                shapeRenderer.setColor(Color.WHITE);
+                int h = player.currentFrame.getRegionHeight();
+                int w = player.currentFrame.getRegionWidth();
+                shapeRenderer.rect(player.player_pos.x, player.player_pos.y, w * player.scale, h * player.scale);
+                shapeRenderer.end();
 
                 textBatch.begin();
                 //DEBUG
@@ -51,7 +61,7 @@ public class RenderManager {
                 font.draw(textBatch, "Mouse Position: " + inputManager.MousePos.x + ", " + inputManager.MousePos.y , 3,  Gdx.graphics.getHeight() - 10);
                 font.draw(textBatch, "Player Position: " + player.player_pos.x + ", " + player.player_pos.y , 3, Gdx.graphics.getHeight() - 30);
                 font.draw(textBatch, "Movement: "  + inputManager.movement().x + ", " + inputManager.movement().y , 3, Gdx.graphics.getHeight() - 50);
-                //font.draw(textBatch, "Angle: "+ player.player_angle, 3, Gdx.graphics.getHeight() - 70);
+                font.draw(textBatch, "Is colliding: "+ player.isColliding, 3, Gdx.graphics.getHeight() - 70);
                 font.draw(textBatch, (int)game.frameRate + " fps", 3, Gdx.graphics.getHeight() - 90);
                 //font.draw(textBatch, "Bullet count in world: " + player.bullets.size() , 3, Gdx.graphics.getHeight() - 110);
                 font.draw(textBatch, "--map structure--", 3, Gdx.graphics.getHeight() - 130);

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -53,7 +55,8 @@ public class Player {
     public TextureRegion currentFrame = null;
     public Sprite CollSprite;
     public float walkspeed;
-    private float scale = 2;
+    public float scale = 2;
+    public boolean isColliding;
     public Player
             (
              Vector2 player_pos,
@@ -69,7 +72,7 @@ public class Player {
     {
         animations = new Animations();
     }
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (batch != null) {
             stateTime += Gdx.graphics.getDeltaTime();
 
@@ -95,9 +98,10 @@ public class Player {
             System.out.println("Batch is null!");
         }
     }
-    public void update(Sprite obj)
+
+    public void update()
     {
-        System.out.println(CollisionHandler.areColliding(CollSprite, obj));
+        //isColliding = checkCollision(obj, shapeRenderer);
     }
 
     public void shoot_action() {

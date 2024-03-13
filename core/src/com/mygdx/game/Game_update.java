@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -63,8 +64,10 @@ public class Game_update {
 
                 for (int i = 0; i < items.size(); i++) {
                     items.get(i).update(deltaTime);
+
                 }
-                player.update(items.get(0).skin);
+                player.update();
+
                 break;
             case PAUSED:
                 // Handle paused logic
@@ -72,6 +75,8 @@ public class Game_update {
                     game.currentState = GameState.PLAYING;
                 }
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + currentState);
         }
     }
 
